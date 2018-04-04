@@ -10,33 +10,26 @@ gmail_password = credentials.gmail_password
 yag = yagmail.SMTP( gmail_user, gmail_password)
 
 
-def make_dict_from_matrix(master_list_matrix):
-    dict_key_list = [x for x in master_list_matrix[0] if x != '']
-
-    master_list_data = {}
-
-    counter = 1
-    for row in master_list_matrix:
-        line_dict = dict(zip(dict_key_list, row))
-        line_dict['counter'] = counter
-        master_list_data[counter] = line_dict
-        counter += 1
-    return master_list_data
-
-print(10 * '\n')
+# get timestamp for log
+temp_timestamp = str(datetime.datetime.now())
+print(temp_timestamp)
 
 
+# open new staff process sheet
 gc = pygsheets.authorize(outh_file='client_secret.json')
 workbook = gc.open('New Staff Process')
 MasterList = workbook.worksheet_by_title("MasterList")
 
+# grab info from the master list
 master_list_matrix = MasterList.get_all_values(returnas='matrix')
 
-
+# create list of dictionary keys
 dict_key_list = [x for x in master_list_matrix[0] if x != '']
 
+# initialize master list
 master_list_data = {}
 
+# convert lists of lists into dictionary of dicts
 counter = 1
 for row in master_list_matrix:
     line_dict = dict(zip(dict_key_list, row))
@@ -46,12 +39,15 @@ for row in master_list_matrix:
 
 # pprint(master_list_data)
 
+# initialize final strings
 final_admin_todo = ''
 final_office_todo = ''
 final_admin_ass_todo = ''
 final_tech_sup_todo = ''
 final_tech_int_todo = ''
 
+
+# begin loop loooing for incomplete staff members
 for staff in master_list_data:
     if master_list_data[staff]['Status'] == 'Not Complete':
         # print(master_list_data[staff]['Staff Name'])
@@ -122,8 +118,7 @@ for staff in master_list_data:
             final_tech_int_todo = final_tech_int_todo +master_list_data[staff]['Staff Name'] + '\n \n' + tech_int_todo + '\n\n'
 
 
-print(final_admin_todo)
-print(final_office_todo)
+
 
 # begin email notifications
 
@@ -131,32 +126,37 @@ contents = 'This is your friendly weekly reminder of things to do for new staff 
 contents2 = 'Due to your efficiency, there is actually nothing for you to do for new hires!'
 html = '<a href="https://docs.google.com/spreadsheets/d/1qK55DXqbnKpUrsqUMaStCAw48f0r7NqDXTvbLlAj0Qc/edit#gid=0">New Staff Process spreadsheet</a>'
 
-# Admin emails
-# if final_admin_todo != '':
-#     yag.send('jjennett@fnwsu.org', 'New Staff Weekly Reminder', [contents, final_admin_todo, html])
-# else:
-#     yag.send('jjennett@fnwsu.org', 'New Staff Weekly Reminder', [contents, contents2, html])
+Admin emails
+if final_admin_todo != '':
+    yag.send(['jjennett@fnwsu.org', 'dstamour@fnwsu.org'], 'New Staff Weekly Reminder', [contents, final_admin_todo, html])
+else:
+    yag.send(['jjennett@fnwsu.org', 'dstamour@fnwsu.org'], 'New Staff Weekly Reminder', [contents, contents2, html])
+print('admin emails sent')
 
-# # office manager emails
-# if final_office_todo != '':
-#     yag.send('add chrissy', 'New Staff Weekly Reminder', [contents, final_office_todo, html])
-# else:
-#     yag.send('add chrissy', 'New Staff Weekly Reminder', [contents, contents2, html])
-#
-# # admin assistant emails
-# if final_admin_ass_todo != '':
-#     yag.send(['add mary', 'add dawn'], 'New Staff Weekly Reminder', [contents, final_admin_ass_todo, html])
-# else:
-#     yag.send(['add mary', 'add dawn'], 'New Staff Weekly Reminder', [contents, contents2, html])
+# office manager emails
+if final_office_todo != '':
+    yag.send('clongway@fnwsu.org', 'New Staff Weekly Reminder', [contents, final_office_todo, html])
+else:
+    yag.send('clongway@fnwsu.org', 'New Staff Weekly Reminder', [contents, contents2, html])
+print('office manager emails sent')
+
+# admin assistant emails
+if final_admin_ass_todo != '':
+    yag.send(['dtessier@fnwsu.org', 'mellis@fnwsu.org'], 'New Staff Weekly Reminder', [contents, final_admin_ass_todo, html])
+else:
+    yag.send(['dtessier@fnwsu.org', 'mellis@fnwsu.org'], 'New Staff Weekly Reminder', [contents, contents2, html])
+print('admin assistant emails sent')
 
 # tech support emails
 if final_tech_sup_todo != '':
     yag.send('jhavens@fnwsu.org', 'New Staff Weekly Reminder', [contents, final_tech_sup_todo, html])
 else:
     yag.send('jhavens@fnwsu.org', 'New Staff Weekly Reminder', [contents, contents2, html])
+print('tech support emails sent')
 
 # tech integration emails
 if final_tech_int_todo != '':
     yag.send('rgregory@fnwsu.org', 'New Staff Weekly Reminder', [contents, final_tech_int_todo, html])
 else:
     yag.send('rgregory@fnwsu.org', 'New Staff Weekly Reminder', [contents, contents2, html])
+print('tech int emails sent')
