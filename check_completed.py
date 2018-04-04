@@ -131,12 +131,12 @@ contents = 'This is your friendly weekly reminder of things to do for new staff 
 contents2 = 'Due to your efficiency, there is actually nothing for you to do for new hires!'
 html = '<a href="https://docs.google.com/spreadsheets/d/1qK55DXqbnKpUrsqUMaStCAw48f0r7NqDXTvbLlAj0Qc/edit#gid=0">New Staff Process spreadsheet</a>'
 
-# # Admin emails
+# Admin emails
 # if final_admin_todo != '':
-#     yag.send(['add dena', 'add justina'], 'New Staff Weekly Reminder', [contents, final_admin_todo, html])
+#     yag.send('jjennett@fnwsu.org', 'New Staff Weekly Reminder', [contents, final_admin_todo, html])
 # else:
-#     yag.send(['add dena', 'add justina'], 'New Staff Weekly Reminder', [contents, contents2, html])
-#
+#     yag.send('jjennett@fnwsu.org', 'New Staff Weekly Reminder', [contents, contents2, html])
+
 # # office manager emails
 # if final_office_todo != '':
 #     yag.send('add chrissy', 'New Staff Weekly Reminder', [contents, final_office_todo, html])
