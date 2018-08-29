@@ -132,7 +132,7 @@ for staff in worksheet_data:
         # special email for Jon with email groups in it.
         jon_contents = 'Email Gropus: ' + worksheet_data[staff]['Email Groups'] + '\n\n'
         html = '<a href="https://docs.google.com/spreadsheets/d/1qK55DXqbnKpUrsqUMaStCAw48f0r7NqDXTvbLlAj0Qc/edit#gid=0">New Staff Process spreadsheet</a>'
-        yag.send('jhavens@fnwsu.org', 'New Employee', [contents, jon_contents, html])
+        yag.send('jlaroche@fnwsu.org', 'New Employee', [contents, jon_contents, html])
         print('sent jons emails')
 
 if is_new_staff == False:

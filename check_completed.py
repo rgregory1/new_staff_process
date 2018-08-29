@@ -3,6 +3,7 @@ from pprint import pprint
 import os
 import yagmail
 import credentials
+import datetime
 
 # setup gmail link
 gmail_user = credentials.gmail_user
@@ -126,7 +127,7 @@ contents = 'This is your friendly weekly reminder of things to do for new staff 
 contents2 = 'Due to your efficiency, there is actually nothing for you to do for new hires!'
 html = '<a href="https://docs.google.com/spreadsheets/d/1qK55DXqbnKpUrsqUMaStCAw48f0r7NqDXTvbLlAj0Qc/edit#gid=0">New Staff Process spreadsheet</a>'
 
-Admin emails
+# Admin emails
 if final_admin_todo != '':
     yag.send(['jjennett@fnwsu.org', 'dstamour@fnwsu.org'], 'New Staff Weekly Reminder', [contents, final_admin_todo, html])
 else:
@@ -149,9 +150,9 @@ print('admin assistant emails sent')
 
 # tech support emails
 if final_tech_sup_todo != '':
-    yag.send('jhavens@fnwsu.org', 'New Staff Weekly Reminder', [contents, final_tech_sup_todo, html])
+    yag.send('jlaroche@fnwsu.org', 'New Staff Weekly Reminder', [contents, final_tech_sup_todo, html])
 else:
-    yag.send('jhavens@fnwsu.org', 'New Staff Weekly Reminder', [contents, contents2, html])
+    yag.send('jlaroche@fnwsu.org', 'New Staff Weekly Reminder', [contents, contents2, html])
 print('tech support emails sent')
 
 # tech integration emails
