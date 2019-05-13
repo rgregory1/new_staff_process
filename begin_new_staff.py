@@ -14,7 +14,9 @@ yag = yagmail.SMTP( gmail_user, gmail_password)
 
 # get timestamp for log
 temp_timestamp = str(datetime.datetime.now())
+print('/n')
 print(temp_timestamp)
+print('checking new staff form entries')
 
 # open up google sheet to see if new staff have been added
 gc = pygsheets.authorize(outh_file='client_secret.json')
@@ -41,7 +43,8 @@ for row in cell_matrix:
     counter += 1
 
 # grab copy of the base new staff sheet
-original_sheet = gc.open('Original New Staff Sheet')
+# original_sheet = gc.open('Original New Staff Sheet')  needed to be replaced with id, don't know why
+original_sheet = gc.open_by_key('1RoVp3ShoaZqmooN6m9mfEKFSduYQUco1xPngt8EwTHo')
 # open new staff process sheet
 staff_sheet = gc.open('New Staff Process')
 
@@ -67,15 +70,19 @@ for staff in worksheet_data:
         employee_sheet = staff_sheet.worksheet('index', (length_of_list - 1))
         employee_sheet.index = 1
 
+        print(staff_name)
         # update worksheet with staff info
-        employee_sheet.update_cell('C2', staff_name)
-        employee_sheet.update_cell('C3', worksheet_data[staff]['Hire Date'])
-        employee_sheet.update_cell('C4', worksheet_data[staff]['Start Date'])
-        employee_sheet.update_cell('C5', worksheet_data[staff]['Position'])
-        employee_sheet.update_cell('C6', worksheet_data[staff]['Building Base'])
+        employee_sheet.update_value('C2', staff_name)
+        employee_sheet.update_value('C3', worksheet_data[staff]['Hire Date'])
+        employee_sheet.update_value('C4', worksheet_data[staff]['Start Date'])
+        employee_sheet.update_value('C5', worksheet_data[staff]['Position'])
+        employee_sheet.update_value('C6', worksheet_data[staff]['Building Base'])
 
         # protect the new page
-        employee_sheet.create_protected_range(employee_sheet.get_gridrange('B1', 'G74'))
+        # employee_sheet.create_protected_range(employee_sheet.get_gridrange('B1', 'G74')) depriciated
+        protected_range = employee_sheet.get_values('B1', 'G74', returnas='range')
+        protected_range.protected = True
+        protected_range.editors = ('users', 'rgregory@fnwsu.org')
 
         # move to MasterList to add formulas to check on completion
         master_list = staff_sheet.worksheet_by_title('MasterList')
@@ -112,14 +119,14 @@ for staff in worksheet_data:
 
         # add Name to Master List
         name_in_list = 'A' + str(worksheet_data[staff]['counter'])
-        master_list.update_cell(name_in_list, staff_name)
+        master_list.update_value(name_in_list, staff_name)
 
 
         # add x to new_staff_list so a new sheet is only added once
         xmark = 'J' + str(worksheet_data[staff]['counter'])
         workbook = gc.open('New Staff Form (Responses)')
         wks = workbook.worksheet_by_title("new_staff_list")
-        wks.update_cell(xmark, 'x')
+        wks.update_value(xmark, 'x')
         print('added x to new staff form sheet')
 
         # begin email notifications
