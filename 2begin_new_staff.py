@@ -133,15 +133,16 @@ for staff in worksheet_data:
         # begin email notifications
         contents = 'A new staff member, ' + staff_name + ', was added to the New Staff Process spreadsheet, go and check it out. \n\n'
         html = '<a href="https://docs.google.com/spreadsheets/d/1qK55DXqbnKpUrsqUMaStCAw48f0r7NqDXTvbLlAj0Qc/edit#gid=0">New Staff Process spreadsheet</a>'
-        yag.send(['rgregory@fnwsu.org', 'jjennett@fnwsu.org', 'dstamour@fnwsu.org', 'dtessier@fnwsu.org', 'mellis@fnwsu.org', 'clongway@fnwsu.org'], 'New Employee', [contents, html])
+        yag.send('rgregory@fnwsu.org', 'New Employee', [contents, html])
+        # yag.send(['rgregory@fnwsu.org', 'jjennett@fnwsu.org', 'dstamour@fnwsu.org', 'dtessier@fnwsu.org', 'mellis@fnwsu.org', 'clongway@fnwsu.org'], 'New Employee', [contents, html])
         print('sent main emails')
-
-
-        # special email for Jon with email groups in it.
-        jon_contents = 'Email Gropus: ' + worksheet_data[staff]['Email Groups'] + '\n\n'
-        html = '<a href="https://docs.google.com/spreadsheets/d/1qK55DXqbnKpUrsqUMaStCAw48f0r7NqDXTvbLlAj0Qc/edit#gid=0">New Staff Process spreadsheet</a>'
-        yag.send('jlaroche@fnwsu.org', 'New Employee', [contents, jon_contents, html])
-        print('sent jons emails')
+        #
+        #
+        # # special email for Jon with email groups in it.
+        # jon_contents = 'Email Gropus: ' + worksheet_data[staff]['Email Groups'] + '\n\n'
+        # html = '<a href="https://docs.google.com/spreadsheets/d/1qK55DXqbnKpUrsqUMaStCAw48f0r7NqDXTvbLlAj0Qc/edit#gid=0">New Staff Process spreadsheet</a>'
+        # yag.send('jlaroche@fnwsu.org', 'New Employee', [contents, jon_contents, html])
+        # print('sent jons emails')
 
 if is_new_staff == False:
     print('program comlpete, no new staff')
